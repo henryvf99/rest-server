@@ -2,9 +2,15 @@ const express = require('express');
 const Usuario = require('../models/usuario');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
+const { verificaToken, verificaAdminRole } = require('../middlewares/autenticacion')
 const app = express();
 
-app.get('/usuario', function(req, res) {
+app.get('/usuario', [verificaToken, verificaAdminRole], (req, res) => {
+
+    return res.json({
+        usuario: req.usuario,
+        nombre: req.usuario.nombre,
+    })
 
     let desde = req.query.desde || 5;
     desde = Number(desde);
@@ -36,7 +42,7 @@ app.get('/usuario', function(req, res) {
 
 });
 
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificaToken, verificaAdminRole], function(req, res) {
     let body = req.body;
 
     let usuario = new Usuario({
@@ -65,8 +71,9 @@ app.post('/usuario', function(req, res) {
 
 });
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificaToken, verificaAdminRole], function(req, res) {
     let id = req.params.id;
+    //pick retorna una copia del objeto, filtando solo los valores que uno quiere
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
 
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
@@ -86,7 +93,7 @@ app.put('/usuario/:id', function(req, res) {
     })
 });
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdminRole], function(req, res) {
 
     let id = req.params.id;
 
@@ -118,7 +125,5 @@ app.delete('/usuario/:id', function(req, res) {
         })
     })
 });
-
-module.exports = app;
 
 module.exports = app;
