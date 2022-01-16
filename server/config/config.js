@@ -18,7 +18,10 @@ let urlDB;
 // ===================
 process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
 
-
+// ===================
+// google CLIENT ID
+// ===================
+process.env.CLIENT_ID = process.env.CLIENT_ID || '177602115685-t71hlt24te506qr2r0ccvqav318qcv3l.apps.googleusercontent.com';
 
 // ===================
 // seed de autenticacion
