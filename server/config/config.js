@@ -16,7 +16,7 @@ let urlDB;
 // ===================
 // vencimiento del token//60 segundos * 60 mintos * 24 horas * 30 dias
 // ===================
-process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
+process.env.CADUCIDAD_TOKEN = '72h';
 
 // ===================
 // google CLIENT ID
